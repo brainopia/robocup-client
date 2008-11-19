@@ -34,8 +34,7 @@ RobocupSocket.open '127.0.0.1', 3100 do |socket|
     if STDIN.ready?
       socket.puts gets
       puts socket.gets
-      started = true
-    elsif started
+    else
       socket.gets
     end
   end  
