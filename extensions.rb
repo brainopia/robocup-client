@@ -4,6 +4,10 @@ class Symbol
   end
 end
 
+class Hash
+  alias :+ :merge
+end
+
 module SExpressionParser
   remove_const :Value
   remove_const :Values

@@ -2,28 +2,29 @@ require 'rubygems'
 require 'sexp'
 require 'extensions'
 
-class Status
-  STRUCTURE = {
+class Status  
+  ROOT_SEXPS = {
     :time => [:now],
     :gs   => [:t, :pm],
     :gyr  => [:n, :rt],
     :hj   => [:n, :ax],
     :frp  => [:n, :c, :f],
-    :see  => [:g1l, :g2l, :g2r, :g1r, :f1l, :f2l, :f1r, :f2r, :b]
+    :see  => visible_objects = [:g1l, :g2l, :g2r, :g1r, :f1l, :f2l, :f1r, :f2r, :b]    
   }  
-  Data = Struct.new *STRUCTURE.keys
-  visible_objects = STRUCTURE[:see]
-  STRUCTURE[visible_objects] = [:pol]
   
-  STRUCTURE.each_pair do |name, args|
+  NESTED_SEXPS = { visible_objects => [:pol] }
+
+  SexpTree = Struct.new *ROOT_SEXPS.keys
+  
+  (ROOT_SEXPS + NESTED_SEXPS).each do |name, args|
     struct = Struct.new *args
     Array(name).each {|name| const_set name.capitalize, struct }
   end
   
-  def initialize(raw_data)
-    @data = Data.new
-    raw_data.downcase.parse_sexp.each do |data_item|
-      structurize(data_item) {|type, content| @data[type] = content }
+  def initialize(raw_sexp)
+    @tree = SexpTree.new
+    raw_sexp.downcase.parse_sexp.each do |data_item|
+      structurize(data_item) {|type, content| @tree[type] = content }
     end
   end
   
@@ -40,7 +41,7 @@ class Status
   end
   
   def self.alias_data(method_name, data_location)
-    value = "@data.#{data_location}"
+    value = "@tree.#{data_location}"
     define_method(method_name) { eval value }
   end
   
