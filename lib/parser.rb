@@ -5,7 +5,9 @@ module Parser
     result, keys, values = {}, [], [[]]
     last_atom, new_list = '', false
 
-    raw_sexp.each_char do |char|
+    raw_sexp.each_byte do |byte|
+      char = byte.chr
+      
       case char
       when '('
         new_list = true
@@ -14,32 +16,37 @@ module Parser
           keys << last_atom.to_sym
           values << []
           new_list = false
+          last_atom = ''
         else
-          values.last << typed(last_atom) if last_atom != ''        
+          unless last_atom == ''
+            values.last << typified(last_atom)
+            last_atom = ''
+          end
         end
-        last_atom = ''
       when ')'
-        if last_atom != ''
-          values.last << typed(last_atom)
+        unless last_atom == ''
+          values.last << typified(last_atom)
           last_atom = ''
         end
-        value = values.pop
-        if value.size == 1
-          value = value.first 
-        elsif value.first.is_a? Hash
-          name = nil
-          value.delete_if {|it| name = it[:n] if it[:n] }
-          value = value.inject({}) {|h,i| h.merge i }
-          value = { name => value } if name
+
+        key, arguments = keys.pop, values.pop
+        
+        if arguments.size == 1
+          arguments = arguments.first 
+        elsif arguments.first.is_a? Hash
+          arguments = arguments.inject({}) {|h,i| h.merge i }
+          name = arguments.delete(:n)
+          arguments = { name => arguments } if name
         end
-        hash = { keys.pop => value }
+
+        hash = { key => arguments }
         values.last << hash
-        current_hash = keys.inject(result) {|h,k| h[k] || (h[k] = {}) }
         if keys.size == 0
-          if current_hash[hash.keys.first] && value.is_a?(Hash)
-            current_hash[hash.keys.first].merge! value
+          current_hash = keys.inject(result) {|h,k| h[k]||={} }
+          if current_hash[key] && arguments.is_a?(Hash)
+            current_hash[key].merge! arguments
           else
-            current_hash[hash.keys.first] = value
+            current_hash[key] = arguments
           end
         end
       else
@@ -49,11 +56,7 @@ module Parser
     result
   end
 
-  def typed(atom)
-    if atom =~ /^[-+]?(\d)+\.(\d)+$/
-      atom.to_f
-    else
-      atom.to_sym
-    end
+  def typified(atom)
+    atom =~ /^[-+]?\d/ ? atom.to_f : atom.to_sym
   end
 end
