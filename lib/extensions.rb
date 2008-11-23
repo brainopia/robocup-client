@@ -1,13 +1,3 @@
-class Symbol
-  def capitalize
-    to_s.capitalize
-  end
-end
-
-class Hash
-  alias :+ :merge
-end
-
 module SExpressionParser
   remove_const :Value
   remove_const :Values
