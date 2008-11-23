@@ -1,6 +1,4 @@
-require 'rubygems'
-require 'sexp'
-require 'extensions'
+require 'parser'
 
 =begin
 Каждому сообщению от сервера соответствует объект Status класса.
@@ -16,30 +14,25 @@ require 'extensions'
 =end
 
 class Status
-  def initialize(raw_sexp)
-    sexp = raw_sexp.parse_sexp
-    @data = make_nested sexp    
-  end
+  include Parser
   
-  def make_nested(sexp)
-    hash = {}
-    sexp.each {|subsexp| hash[subsexp.shift] = (subsexp.first.is_a? Array) ? make_nested(subsexp) : subsexp }
-    hash
+  def initialize(sexp)
+    @data = parse sexp    
   end
-    
+      
   def time
-    @data[:time][:now].first
+    @data[:time][:now]
   end
 
   def game_time
-    @data[:GS][:t].first
+    @data[:GS][:t]
   end
   
   def game_mode
-    @data[:GS][:pm].first
+    @data[:GS][:pm]
   end
   
   def gyroscope
-    @data[:GYR][:rt]
+    @data[:GYR][:torso][:rt]
   end
 end
