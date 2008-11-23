@@ -1,6 +1,17 @@
+=begin
+Данный модуль предназначен для парсинга s-expressions, получаемых от робокаповского сервера
+TODO: сделать реализацию чище
+=end
 module Parser
   private
   
+=begin
+Метод parse получает строку вида
+  '(time (now 696.94))(GS (t 0.00) (pm BeforeKickOff))(GYR (n torso) (rt -0.24 3.30 -0.06))'
+и возвращает хеш
+  {:time=>{:now=>696.94}, :GS=>{:t=>0.0, :pm=>:BeforeKickOff}, :GYR=>{:torso=>{:rt=>[-0.24, 3.3, -0.06]}}}  
+=end  
+
   def parse(raw_sexp)
     result, keys, values = {}, [], [[]]
     last_atom, new_list = '', false
