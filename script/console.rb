@@ -2,7 +2,9 @@
 
 require 'socket'
 require 'io/wait'
-require 'lib/robocup/socket'
+
+$:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+require 'robocup/socket'
 
 # Gracefully kill a client by ctrl-c
 trap('INT') { exit }

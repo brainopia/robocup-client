@@ -5,8 +5,8 @@ module Robocup
   TODO: сделать реализацию чище
 =end
   module Parser
-    private
-  
+    extend self
+    
 =begin
   Метод parse получает строку вида
     '(time (now 696.94))(GS (t 0.00) (pm BeforeKickOff))(GYR (n torso) (rt -0.24 3.30 -0.06))'
@@ -72,5 +72,6 @@ module Robocup
     def typified(atom)
       atom =~ /^[-+]?\d/ ? atom.to_f : atom.to_sym
     end
-  end
-end
+    
+  end # Parser  
+end # Robocup

@@ -1,4 +1,7 @@
 require 'robocup/parser'
+require 'player/status/vision'
+require 'player/status/joints'
+require 'player/status/force'
 
 module Player
 
@@ -14,10 +17,11 @@ module Player
     p status.gyroscope    # => [-0.24, 3.3, -0.06]
 =end
   class Status
-    include Robocup::Parser
-  
+    attr_reader :vision, :joints, :force
+    
     def initialize(sexp)
-      @data = parse sexp    
+      @data = Robocup::Parser.parse sexp  
+      @vision, @joints, @force = Vision.new(@data), Joints.new(@data), Force.new(@data)
     end
       
     def time
@@ -35,5 +39,6 @@ module Player
     def gyroscope
       @data[:GYR][:torso][:rt]
     end
-  end
-end
+        
+  end # Status
+end # Player
