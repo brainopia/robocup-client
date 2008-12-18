@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require 'socket'
+
+$:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+require 'robocup/socket'
+
+# При нажатии ctrl-c прекращаем работу без ошибок
+trap('INT') { exit }
+
+Robocup::Socket.open '127.0.0.1', 3100 do |socket|
+  Player.effector.init
+  loop { eval gets }
+end
