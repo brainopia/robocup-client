@@ -6,42 +6,27 @@ module Player
         @data = data[:See]
       end
       
-      def g1l
-        @data[:G1L][:pol]
-      end
-    
-      def g2l
-        @data[:G2L][:pol]
-      end
-    
-      def g1r
-        @data[:G1R][:pol]
-      end
-    
-      def g2r
-        @data[:G2R][:pol]
-      end
-    
-      def f1l
-        @data[:F1L][:pol]
+      def goal1
+        values_for :G1L, :G1R
       end
 
-      def f2l
-        @data[:F2L][:pol]
+      def goal2
+        values_for :G2L, :G2R
       end
-
-      def f1r
-        @data[:F1R][:pol]
-      end
-
-      def f2r
-        @data[:F2R][:pol]
+      
+      def field
+        values_for :F1L, :F2L, :F1R, :F2R
       end
 
       def ball
         @data[:B][:pol]
       end
       
+      private
+      
+      def values_for(*objects)
+        objects.inject([]) {|values, object| values << @data[object][:pol] }
+      end      
     end # Vision
   end # Status
 end # Player

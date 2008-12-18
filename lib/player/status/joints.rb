@@ -6,94 +6,31 @@ module Player
         @data = data[:HJ]
       end
   
-      def h1
-        @data[:hj1][:ax]
+      def head
+        values_for :hj1, :hj2
       end
 
-      def h2
-        @data[:hj2][:ax]
+      def left_arm
+        values_for :laj1, :laj2, :laj3, :laj4
       end
-  
-      def la1
-        @data[:laj1][:ax]
-      end
-      
-      def la2
-        @data[:laj2][:ax]
+            
+      def right_arm
+        values_for :raj1, :raj2, :raj3, :raj4
       end
       
-      def la3
-        @data[:laj3][:ax]
-      end
-      
-      def la4
-        @data[:laj4][:ax]
-      end
-      
-      def ra1
-        @data[:raj1][:ax]
-      end
-      
-      def ra2
-        @data[:raj2][:ax]
-      end
-      
-      def ra3
-        @data[:raj3][:ax]
-      end
-      
-      def ra4
-        @data[:raj4][:ax]
-      end
-      
-      def ll1
-        @data[:llj1][:ax]
-      end
-      
-      def ll2
-        @data[:llj2][:ax]
-      end
-      
-      def ll3
-        @data[:llj3][:ax]
-      end
-      
-      def ll4
-        @data[:llj4][:ax]
+      def left_leg
+        values_for :llj1, :llj2, :llj3, :llj4, :llj5, :llj6
       end
 
-      def ll5
-        @data[:llj5][:ax]
+      def right_leg
+        values_for :rlj1, :rlj2, :rlj3, :rlj4, :rlj5, :rlj6
       end
+            
+      private
       
-      def ll6
-        @data[:llj6][:ax]
+      def values_for(*joints)
+        joints.inject([]) {|values, joint| values << @data[joint][:ax] }
       end
-      
-      def rl1
-        @data[:rlj1][:ax]
-      end
-      
-      def rl2
-        @data[:rlj2][:ax]
-      end
-      
-      def rl3
-        @data[:rlj3][:ax]
-      end
-      
-      def rl4
-        @data[:rlj4][:ax]
-      end
-
-      def rl5
-        @data[:rlj5][:ax]
-      end
-      
-      def rl6
-        @data[:rlj6][:ax]
-      end
-      
     end # Joints
   end # Status
 end # Player
