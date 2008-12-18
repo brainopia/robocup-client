@@ -12,17 +12,17 @@ module Player
   
   def effector
     Player::Effector
-  end
+  end  
 end
 
 # В данном потоке будет происходить общение с сервером
 Thread.new do
   Robocup::Socket.open '127.0.0.1', 3100 do |socket|
-    ["(scene rsg/agent/nao/nao.rsg)", "(init (unum 0)(teamname NaoRobot))"].each do |init_msg|
-      socket.puts init_msg
-      socket.gets
-    end
+    Player.effector.init
     
-    loop { Player.status = socket.gets }
+    loop do
+      socket.puts Player.effector.commands.shift
+      Player.status = socket.gets
+    end
   end
 end
