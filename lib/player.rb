@@ -1,4 +1,6 @@
 require 'robocup/socket'
+require 'player/status'
+require 'player/effector'
 
 module Player
   extend self
@@ -6,6 +8,10 @@ module Player
   
   def status=(sexp)
     @status = Status.new sexp
+  end
+  
+  def effector
+    Player::Effector
   end
 end
 
