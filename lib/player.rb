@@ -21,7 +21,7 @@ Thread.new do
     Player.effector.init
     
     loop do
-      socket.puts Player.effector.commands.shift
+      socket.puts Player.effector.commands.shift unless Player.effector.commands.empty?
       Player.status = socket.gets
     end
   end
