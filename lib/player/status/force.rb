@@ -6,11 +6,11 @@ module Player
         @data = data[:FRP]
       end
       
-      def rf
+      def right_foot
         @data[:rf]
       end
       
-      def lf
+      def left_foot
         @data[:lf]
       end
 
