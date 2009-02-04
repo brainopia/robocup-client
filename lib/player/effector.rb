@@ -9,8 +9,8 @@ module Player
                      "(init (unum #{number})(teamname #{team}))"
     end
     
-    def joint(name, angle)
-      @commands.push "(#{name} #{angle})"
+    def joint(name, speed)
+      @commands.push "(#{name} #{speed})"
     end
   end # Effector
 end # Player

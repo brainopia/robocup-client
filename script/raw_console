@@ -1,24 +1,32 @@
 #!/usr/bin/env ruby
 
-require 'io/wait'
+require 'readline'
 $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'robocup/socket'
 
 # При нажатии ctrl-c прекращаем работу без ошибок
 trap('INT') { exit }
 
-Robocup::Socket.open '127.0.0.1', 3100 do |socket|
+# Если скрипт был запущен с аргументом, то мы будем считать его адресом робокаповского сервера иначе локалхост
+SERVER = ARGV.first || '127.0.0.1'
+
+Robocup::Socket.open SERVER, 3100 do |socket|
   ["(scene rsg/agent/nao/nao.rsg)", "(init (unum 0)(teamname NaoRobot))"].each do |init_msg|
     socket.puts init_msg
     socket.gets
   end
-
-  loop do
-    if STDIN.ready?
-      socket.puts gets
+  
+  Thread.new do
+    loop do
+      command = Readline::readline '>> '
+      Readline::HISTORY.push command
+      exit if command == 'exit'
+      socket.puts command
       puts socket.gets
-    else
-      socket.gets
-    end
+    end  
+  end
+  
+  loop do
+    socket.gets
   end  
 end

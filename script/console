@@ -1,11 +1,28 @@
 #!/usr/bin/env ruby
 
+require 'readline'
 $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'player'
 
 # При нажатии ctrl-c прекращаем работу без ошибок
 trap('INT') { exit }
 
-Robocup::Socket.open '127.0.0.1', 3100 do |socket|
-  loop { eval gets }
+# Если скрипт был запущен с аргументом, то мы будем считать его адресом робокаповского сервера иначе локалхост
+SERVER = ARGV.first || '127.0.0.1'
+
+Robocup::Socket.open SERVER, 3100 do |socket|
+  Player.effector.init
+  
+  Thread.new do
+    loop do
+      command = Readline::readline '>> '
+      Readline::HISTORY.push command
+      puts eval command
+    end  
+  end
+  
+  loop do
+    socket.puts Player.effector.commands.shift unless Player.effector.commands.empty?
+    Player.status = socket.gets
+  end
 end

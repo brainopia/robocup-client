@@ -11,6 +11,7 @@ module Robocup
     end
   
     def puts(message)
+      message += "\n"      
       prefix = pack_big_endian message.size
       super prefix + message
     end
