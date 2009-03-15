@@ -1,9 +1,12 @@
 require File.join(File.dirname(__FILE__), '../../spec_helper')
+require 'player/status'
 require 'player/status/joints'
 
 describe Player::Status::Joints do
   before(:each) do
-    @joints_status = Player::Status::Joints.new parsed_status_data
+    @status = Player::Status
+    @status.data = status_data
+    @joints_status = Player::Status::Joints
   end
 
   it "should return a status of H1 joint" do
@@ -93,4 +96,8 @@ describe Player::Status::Joints do
   it "should return a status of LL6 joint" do
     @joints_status.left_leg[5].should == -46.02
   end
+  
+  it "status should have a joints method" do
+    @status.joints.should == Player::Status::Joints
+  end  
 end

@@ -1,9 +1,12 @@
 require File.join(File.dirname(__FILE__), '../../spec_helper')
+require 'player/status'
 require 'player/status/vision'
 
 describe Player::Status::Vision do
   before(:each) do
-    @vision_status = Player::Status::Vision.new parsed_status_data
+    @status = Player::Status
+    @status.data = status_data    
+    @vision_status = Player::Status::Vision
   end
 
   it "should return G1L coordinates" do
@@ -40,5 +43,9 @@ describe Player::Status::Vision do
   
   it "should return ball coordinates" do
     @vision_status.ball.should == [5.25, -0.88, -2.29]
+  end  
+  
+  it "status should have a vision method" do
+    @status.vision.should == Player::Status::Vision
   end  
 end

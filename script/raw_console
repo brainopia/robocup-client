@@ -1,28 +1,51 @@
 #!/usr/bin/env ruby
 
-require 'readline'
+require 'rubygems'
+require 'rawline'
 $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'robocup/socket'
+require 'player/effector'
 
-# При нажатии ctrl-c прекращаем работу без ошибок
-trap('INT') { exit }
-
-# Если скрипт был запущен с аргументом, то мы будем считать его адресом робокаповского сервера иначе локалхост
 SERVER = ARGV.first || '127.0.0.1'
+Thread.abort_on_exception = true
+detailed_flag = true
 
-Robocup::Socket.open SERVER, 3100 do |socket|
-  ["(scene rsg/agent/nao/nao.rsg)", "(init (unum 0)(teamname NaoRobot))"].each do |init_msg|
-    socket.puts init_msg
-    socket.gets
-  end
-  
+editor = RawLine::Editor.new
+
+editor.bind(:ctrl_x) { puts "Exiting..."; exit }
+
+editor.bind(:ctrl_t) do
+  detailed_flag = !detailed_flag
+  editor.write_line "Detailed info is #{detailed_flag}"
+end
+
+editor.bind(:ctrl_a) do
+  word = editor.line.word[:text]
+  editor.write_line "Completion info:\n #{editor.completion_proc.call(word).join ' '} \n"
+end
+
+editor.completion_proc = Proc.new {|word| Player::Joint::Names.find_all {|it| it.include? word }}
+editor.completion_append_string = ' '
+
+Robocup::Socket.open SERVER do |socket|
   Thread.new do
     loop do
-      command = Readline::readline '>> '
-      Readline::HISTORY.push command
-      exit if command == 'exit'
-      socket.puts command
-      puts socket.gets
+      command = editor.readline '>> '
+
+      unless command.include? 'info'
+        editor.history.push command
+        
+        case command
+        when 'exit'
+          exit
+        when 'detailed toggle'
+          detailed_flag = !detailed_flag
+        end
+        
+        socket.puts "(#{command})"
+        puts socket.gets if detailed_flag
+        puts
+      end
     end  
   end
   

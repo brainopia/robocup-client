@@ -1,28 +1,41 @@
 #!/usr/bin/env ruby
 
-require 'readline'
+require 'rubygems'
+require 'irb'
+require 'irb/completion'
 $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'player'
 
-# При нажатии ctrl-c прекращаем работу без ошибок
-trap('INT') { exit }
-
-# Если скрипт был запущен с аргументом, то мы будем считать его адресом робокаповского сервера иначе локалхост
 SERVER = ARGV.first || '127.0.0.1'
+Thread.abort_on_exception = true
 
-Robocup::Socket.open SERVER, 3100 do |socket|
-  Player.effector.init
+class Object
+  # Метод для быстрой справки по методам текущего объекта
+  def m
+    if [Module, Class].include? self.class
+      public_methods - self.class.public_instance_methods
+    else
+      class << self
+        self.public_instance_methods false
+      end
+    end
+  end
+  
+  def j; Player.joint end
+  def s; Player.status end
+end
+
+Robocup::Socket.open SERVER do |socket|
   
   Thread.new do
-    loop do
-      command = Readline::readline '>> '
-      Readline::HISTORY.push command
-      puts eval command
-    end  
+    begin
+      loop do
+        socket.puts Player.commands.shift unless Player.commands.empty?
+        Player.status = socket.gets
+      end
+    rescue IOError
+    end    
   end
   
-  loop do
-    socket.puts Player.effector.commands.shift unless Player.effector.commands.empty?
-    Player.status = socket.gets
-  end
+  IRB.start
 end
