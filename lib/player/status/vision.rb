@@ -18,7 +18,7 @@ module Player::Status::Vision
   end
 
   def ball
-    data[:B][:pol] rescue nil
+    data[:B][:pol]
   end
 
   private
@@ -30,5 +30,5 @@ end
 
 module Player::Status
   attr_reader :vision
-  @vision = Vision
+  @vision = Vision  
 end

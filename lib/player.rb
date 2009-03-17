@@ -1,9 +1,10 @@
 require 'robocup/socket'
+require 'robocup/joints'
 require 'player/status'
 require 'player/status/vision'
 require 'player/status/joints'
 require 'player/status/force'
-require 'player/effector'
+require 'player/joint'
 
 module Player
   extend self

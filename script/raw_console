@@ -4,11 +4,13 @@ require 'rubygems'
 require 'rawline'
 $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'robocup/socket'
-require 'player/effector'
+require 'robocup/parser'
+require 'robocup/joints'
 
 SERVER = ARGV.first || '127.0.0.1'
 Thread.abort_on_exception = true
 detailed_flag = true
+filter_node = ''
 
 editor = RawLine::Editor.new
 
@@ -21,10 +23,10 @@ end
 
 editor.bind(:ctrl_a) do
   word = editor.line.word[:text]
-  editor.write_line "Completion info:\n #{editor.completion_proc.call(word).join ' '} \n"
+  editor.write_line "Completion info:\n #{editor.completion_proc.call(word).join ' '}"
 end
 
-editor.completion_proc = Proc.new {|word| Player::Joint::Names.find_all {|it| it.include? word }}
+editor.completion_proc = proc {|word| Robocup::Joints.effectors.values.select {|it| it.include? word }}
 editor.completion_append_string = ' '
 
 Robocup::Socket.open SERVER do |socket|
@@ -40,11 +42,15 @@ Robocup::Socket.open SERVER do |socket|
           exit
         when 'detailed toggle'
           detailed_flag = !detailed_flag
+        when /filter(.*)/
+          filter_node = Regexp.escape($1.lstrip)
         end
-        
-        socket.puts "(#{command})"
-        puts socket.gets if detailed_flag
-        puts
+      
+        socket.puts "(#{command})"        
+        if detailed_flag
+          result = socket.gets
+          puts filter_node.empty? ? result : Robocup::Parser.filter(result, filter_node)
+        end
       end
     end  
   end

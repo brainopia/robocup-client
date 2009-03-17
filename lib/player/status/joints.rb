@@ -1,34 +1,32 @@
 module Player::Status::Joints
   extend self
   
-  def data
-    Player::Status.data[:HJ]
-  end
-
-  def head
-    values_for :hj1, :hj2
-  end
-
-  def left_arm
-    values_for :laj1, :laj2, :laj3, :laj4
-  end
-        
-  def right_arm
-    values_for :raj1, :raj2, :raj3, :raj4
+  Robocup::Joints.structure.each do |limb, joints|    
+    perceptors = joints.map {|joint| Robocup::Joints.perceptors[joint] }
+    
+    define_method limb do
+      values_for perceptors
+    end
+    
+    joints.each do |joint|
+      define_method joint do
+        value_for Robocup::Joints.perceptors[joint]
+      end
+    end
   end
   
-  def left_leg
-    values_for :llj1, :llj2, :llj3, :llj4, :llj5, :llj6
-  end
-
-  def right_leg
-    values_for :rlj1, :rlj2, :rlj3, :rlj4, :rlj5, :rlj6
+  def data
+    Player::Status.data[:HJ]
   end
         
   private
   
-  def values_for(*joints)
-    joints.inject([]) {|values, joint| values << data[joint][:ax] }
+  def value_for(joint)
+    data[joint.to_sym][:ax]
+  end
+  
+  def values_for(joints)
+    joints.inject([]) {|values, joint| values << value_for(joint) }
   end
 end
 

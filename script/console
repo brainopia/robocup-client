@@ -6,7 +6,9 @@ require 'irb/completion'
 $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'player'
 
-SERVER = ARGV.first || '127.0.0.1'
+SERVER = ARGV.shift || '127.0.0.1'
+ARGV.concat [ "--readline", "--prompt-mode", "simple" ]
+
 Thread.abort_on_exception = true
 
 class Object
@@ -19,10 +21,12 @@ class Object
         self.public_instance_methods false
       end
     end
-  end
-  
+  end  
+end
+
+module Kernel
   def j; Player.joint end
-  def s; Player.status end
+  def s; Player.status end  
 end
 
 Robocup::Socket.open SERVER do |socket|

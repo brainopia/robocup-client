@@ -7,6 +7,11 @@ module Robocup
   module Parser
     extend self
     
+    # Позволяет выделить из s-expression отдельный узел
+    def filter(sexp, node)
+      sexp[%r|\([^()]*#{node}[^()]*(\([^()]*\)[^()]*)*\)|]
+    end
+    
 =begin
   Метод parse получает строку вида
     '(time (now 696.94))(GS (t 0.00) (pm BeforeKickOff))(GYR (n torso) (rt -0.24 3.30 -0.06))'
