@@ -4,8 +4,7 @@ module Player
     
     Robocup::Joints.effectors.each do |joint, effector|
       define_method joint do |speed|
-          Player.commands.push "(#{effector} #{speed})"
-        end
+        Player.commands.push "(#{effector} #{speed})"
       end
     end
     
