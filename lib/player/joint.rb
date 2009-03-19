@@ -1,3 +1,5 @@
+require 'robocup/joints'
+
 module Player
   module Joint
     extend self

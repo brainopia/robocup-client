@@ -1,7 +1,3 @@
-require 'robocup/socket'
-require 'robocup/parser'
-require 'robocup/mapper'
-require 'robocup/joints'
 require 'player/joint'
 require 'player/observable'
 

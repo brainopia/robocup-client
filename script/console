@@ -4,12 +4,9 @@ require 'rubygems'
 require 'irb'
 require 'irb/completion'
 $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
-require 'player'
+require 'robocup/session'
 
-SERVER = ARGV.shift || '127.0.0.1'
 ARGV.concat [ "--readline", "--prompt-mode", "simple" ]
-
-Thread.abort_on_exception = true
 
 class Object
   # Метод для быстрой справки по методам текущего объекта
@@ -29,17 +26,4 @@ module Kernel
   def s; Player.status end  
 end
 
-Robocup::Socket.open SERVER do |socket|
-  
-  Thread.new do
-    begin
-      loop do
-        socket.puts Player.commands.shift unless Player.commands.empty?
-        Player.data = Robocup::Mapper.new Robocup::Parser.run socket.gets
-      end
-    rescue IOError
-    end    
-  end
-  
-  IRB.start
-end
+IRB.start
