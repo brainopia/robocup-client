@@ -1,9 +1,10 @@
-require 'player/joint'
+require 'player/joints'
 require 'player/observable'
 
 module Player
   extend self
-  extend Observable
+  extend Joints
+  extend Observable  
   
   attr_reader :commands, :data
   @commands = []
@@ -14,9 +15,5 @@ module Player
       notify_observers(perceptor, old_value, new_value) unless old_value == new_value
       new_value
     end
-  end
-  
-  def joint
-    Joint
   end  
 end
