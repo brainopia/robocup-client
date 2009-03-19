@@ -1,4 +1,5 @@
 require 'robocup/parser'
+require 'player/status/observable'
 
 module Player
 
@@ -15,11 +16,14 @@ module Player
 =end
   module Status
     extend self
+    extend Observable
+    
     attr_reader :data
     @data = {}
     
     def data=(sexp)
-      data.merge! Robocup::Parser.parse sexp
+      new_data = Robocup::Parser.parse sexp
+      data.merge!(new_data) {|*args| notify_observers(*args); args.last }
     end
       
     def time
@@ -36,7 +40,6 @@ module Player
   
     def gyroscope
       data[:GYR][:torso][:rt]
-    end
-        
+    end    
   end # Status
 end # Player

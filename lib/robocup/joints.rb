@@ -11,7 +11,7 @@ module Robocup
       :right_leg  => %w(rl1 rl2 rl3 rl4 rl5 rl6)
     }
     
-    @all = @structure.inject([]) {|it, (k,v)| it << v }.flatten
+    @all = @structure.values.flatten
     
     def convert_to_perceptor(joint)
       joint.sub /(\D*)(\d)/, '\1j\2'

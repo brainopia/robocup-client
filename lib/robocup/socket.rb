@@ -27,7 +27,7 @@ module Robocup
           socket.puts init_msg
           socket.gets
         end
-        
+      
         yield socket
       end
     end        

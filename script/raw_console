@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 
+# TODO: move to the vendor
 require 'rubygems'
 require 'rawline'
+
 $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'robocup/socket'
 require 'robocup/parser'
