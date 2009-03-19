@@ -1,14 +1,13 @@
 module Player
 =begin
-  Модуль статуса расширяется данным модулем, чтобы поддерживать вызов наблюдателей при изменении заданных персепторов
-  Player.add_observer(:h1) do |old_value, new_value| 
-    puts "head joint 1 changed from #{old_value} to #{new_value}"
-    if new_value.abs > 10
-      Player.h1 = 0
-      throw :done 
-    end
+  Модуль статуса расширяется данным модулем, чтобы поддерживать вызов наблюдателей при изменении заданных персепторов.
+  Пример, в котором будет отображаться информация об изменении угла для h1, пока величина угла не достигнет 10 градусов.
+  Player.add_observer(:h1) do |old_value, new_value|   
+    puts "Угол соединения h1 изменился от #{old_value} к #{new_value}."  
+    throw :done if new_value.abs > 10
   end
 =end
+
   module Observable
     def self.extended(object)
       object.instance_variable_set :@observers, Hash.new {|hash, new_perceptor| hash[new_perceptor] = [] }
