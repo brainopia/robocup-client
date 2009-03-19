@@ -19,10 +19,12 @@ module Player
     
     @effectors.each do |joint, effector|
       define_method "#{joint}=" do |angle|
-        # TODO: restrict angle max and min for each joint
-        # Refactor this method
-        # Add option to set custom speed
-        angle_error = 0.1
+        # TODO: 
+        # 1) restrict max and min angle for each joint
+        # 2) refactor this method
+        # 3) add option to set custom speed and angle error
+        # 4) add ability to choose between several presets varying by speed and angle error
+        angle_error = 1
         destination_angle = (angle / angle_error).round
         
         current_angle = (data[joint] / angle_error).round
@@ -35,7 +37,7 @@ module Player
               throw :done 
             end
           end
-          speed = 0.1
+          speed = 1
           speed *= (current_angle > destination_angle) ? -1 : 1
           commands.push "(#{effector} #{speed})"
         end
