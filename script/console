@@ -4,7 +4,7 @@ require 'rubygems'
 require 'irb'
 require 'irb/completion'
 $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
-require 'robocup/session'
+require 'robocup'
 
 ARGV.concat [ "--readline", "--prompt-mode", "simple" ]
 
@@ -22,8 +22,12 @@ class Object
 end
 
 module Kernel
-  def j; Player.joint end
-  def s; Player.status end  
+  def reload!
+    Dir.glob('lib/**/*.rb').each {|file| load file }
+    Robocup.restart
+    return true
+  end
 end
 
+Robocup.start
 IRB.start
