@@ -35,7 +35,7 @@ Robocup::Socket.open SERVER do |socket|
     begin
       loop do
         socket.puts Player.commands.shift unless Player.commands.empty?
-        Player.status = socket.gets
+        Player.data = Robocup::Mapper.new Robocup::Parser.run socket.gets
       end
     rescue IOError
     end    

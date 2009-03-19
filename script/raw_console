@@ -2,6 +2,7 @@
 
 # TODO: move to the vendor
 require 'rubygems'
+# install gem termios to make it faster on *nix
 require 'rawline'
 
 $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
