@@ -2,7 +2,7 @@ module Robocup
 
 =begin
   Данный модуль предназначен для парсинга s-expressions, получаемых от робокаповского сервера
-  TODO: рефакторинг
+  TODO: refactoring
 =end
   module Parser
     extend self
