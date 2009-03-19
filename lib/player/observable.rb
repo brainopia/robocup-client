@@ -4,7 +4,7 @@ module Player
   Player.add_observer(:h1) do |old_value, new_value| 
     puts "head joint 1 changed from #{old_value} to #{new_value}"
     if new_value.abs > 10
-      Player.joint.h1 0
+      Player.h1 = 0
       throw :done 
     end
   end

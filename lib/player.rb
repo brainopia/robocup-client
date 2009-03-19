@@ -15,5 +15,5 @@ module Player
       notify_observers(perceptor, old_value, new_value) unless old_value == new_value
       new_value
     end
-  end  
+  end
 end

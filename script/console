@@ -22,10 +22,9 @@ class Object
 end
 
 module Kernel
+  # Перезагружаем все файлы (чтобы не перезапускать консоль в случае редактирования кода)
   def reload!
     Dir.glob('lib/**/*.rb').each {|file| load file }
-    Robocup.restart
-    return true
   end
 end
 
