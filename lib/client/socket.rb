@@ -1,6 +1,6 @@
 require 'socket'
 
-module Robocup
+module Client
   class Socket < TCPSocket
     def pack_big_endian(number)
       [number].pack 'N'

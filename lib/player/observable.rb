@@ -8,6 +8,7 @@ module Player
   end
 =end
 
+# TODO: add manipulators
   module Observable
     def self.extended(object)
       object.instance_variable_set :@observers, Hash.new {|hash, new_perceptor| hash[new_perceptor] = [] }

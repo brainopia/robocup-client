@@ -1,4 +1,4 @@
-module Robocup
+module Client
 
 =begin
   Данный модуль предназначен для парсинга s-expressions, получаемых от робокаповского сервера
@@ -78,5 +78,5 @@ module Robocup
       atom =~ /^[-+]?\d/ ? atom.to_f : atom.to_sym
     end
     
-  end # Parser  
-end # Robocup
+  end
+end

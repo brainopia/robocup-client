@@ -1,4 +1,4 @@
-module Robocup
+module Client
   class Mapper < Hash
   
     # TODO: add vision perceptors when we'll need them

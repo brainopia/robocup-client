@@ -1,6 +1,10 @@
 module Player
   module Joints
     
+    class << self
+      attr_reader :structure, :all, :effectors
+    end
+    
     @structure = { 
       :head       => [:h1, :h2],
       :left_arm   => [:la1, :la2, :la3, :la4],
@@ -20,6 +24,8 @@ module Player
     @effectors.each do |joint, effector|
       define_method "#{joint}=" do |angle|
         # TODO: restrict max and min angle for each joint
+        # TODO: remove observer if joint is stuck
+        # TODO: add manipulators to prevent a situation when two observers make obstacles for each other 
         # TODO: refactor this method
         # TODO: add option to set custom speed and angle error
         # TODO: add ability to choose between several presets varying by speed and angle error          
