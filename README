@@ -33,6 +33,6 @@ Player.add_observer(:h1) do |old_value, new_value|
   throw :done if new_value.abs > 10
 end
 
-Чтобы посмотреть список определенных для робота поз, наберите Player.position.m. Чтобы вызвать конкретную позу, например, hi - напишите Player.position.hi.
+Чтобы посмотреть список определенных для робота поз, наберите Player.position.m. Чтобы вызвать конкретную позу, к примеру hi - напишите Player.position.hi.
 
 Все позы определены в формате yaml и находятся в папке lib/player/position/.
