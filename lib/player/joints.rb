@@ -1,3 +1,5 @@
+require 'player/joints/position'
+
 module Player
   module Joints
     
@@ -24,7 +26,7 @@ module Player
         # TODO: add option to set custom speed and angle error
         # TODO: add ability to choose between several presets varying by speed and angle error          
         
-        angle_error = 1
+        angle_error = 2
         destination_angle = (angle / angle_error).round
         
         current_angle = (data[joint] / angle_error).round
