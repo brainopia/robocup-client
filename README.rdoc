@@ -35,12 +35,10 @@
 
 Пример, в котором будет отображаться информация об изменении угла для <em>h1</em>, пока величина угла не достигнет 10 градусов.
 
-  <tt>
   Player.add_observer(:h1) do |old_value, new_value|   
     puts "Угол соединения h1 изменился от #{old_value} к #{new_value}."  
     throw :done if new_value.abs > 10
   end
-  </tt>
 
 Чтобы посмотреть список определенных для робота поз, наберите <tt>Player.position.m</tt>. Чтобы вызвать конкретную позу, к примеру _hi_ - напишите <tt>Player.position.hi</tt>.
 
