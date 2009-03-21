@@ -1,4 +1,5 @@
 require 'player/joints'
+require 'player/position'
 require 'player/observable'
 
 module Player

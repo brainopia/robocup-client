@@ -1,5 +1,3 @@
-require 'player/joints/position'
-
 module Player
   module Joints
     
