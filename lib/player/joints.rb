@@ -36,7 +36,7 @@ module Player
         current_angle = (data[joint] / angle_error).round
         
         if destination_angle != current_angle
-          add_observer(joint) do |old_value, new_value|
+          add_observer(joint, :manipulator) do |old_value, new_value|
             current_angle = (new_value / angle_error).round
             if current_angle == destination_angle            
               commands.push "(#{effector} 0)"
@@ -46,6 +46,9 @@ module Player
           speed = 1
           speed *= (current_angle > destination_angle) ? -1 : 1
           commands.push "(#{effector} #{speed})"
+        else
+          remove_observer joint, :manipulator
+          commands.push "(#{effector} 0)"          
         end
       end
       
