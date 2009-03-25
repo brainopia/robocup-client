@@ -13,11 +13,23 @@ module Player
       pose = YAML.load_file pose_file
       pose_name = File.basename pose_file, '.yml'
       
-      define_method pose_name do
-        pose.each do |joint, angle|
-          Player.send "#{joint}=", angle
+      eval <<CODE
+        def #{pose_name}(&pose_callback)
+          pose = #{pose.inspect}
+
+          joints_size = pose.size
+          joints_completed = 0
+          
+          pose.each do |joint, angle|
+            Player.send joint, :angle => angle do
+              if (joints_completed += 1) == joints_size && pose_callback
+                pose_callback.call
+              end
+            end
+            
+          end                      
         end
-      end
+CODE
     end
   end
     

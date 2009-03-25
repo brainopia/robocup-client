@@ -26,6 +26,10 @@ module Kernel
   def reload
     Dir.glob('lib/**/*.rb').each {|file| load file }
   end
+  
+  def r
+    Player
+  end
 end
 
 Client.start
