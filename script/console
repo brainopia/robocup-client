@@ -29,8 +29,8 @@ module Kernel
   
   def r
     Player
-  end
+  end  
 end
 
-Client.start
+Client.connect
 IRB.start

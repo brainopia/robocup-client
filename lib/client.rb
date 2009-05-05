@@ -10,7 +10,7 @@ module Client
   extend self
   Server = ARGV.shift || '127.0.0.1' unless Client.const_defined? 'Server'
   
-  def start
+  def connect
     @thread = Thread.new do
       Client::Socket.open Server do |socket|
         loop do
@@ -19,14 +19,15 @@ module Client
         end
       end
     end
+    sleep 0.1 # give time for a socket to be properly initialized in the second thread
   end
   
-  def stop
+  def disconnect
     @thread && @thread.exit
   end
   
-  def restart
-    stop
-    start
+  def reconnect
+    disconnect
+    connect
   end
 end
