@@ -31,7 +31,8 @@ module Player
     end
         
     eval <<CODE
-      # TODO: remove observer if joint is stuck
+      # TODO: remove observer if joint is stuck (eg, it is stuck if it returns (42.17, 49.2) in infinite cycle)
+      # implement Joint::Status to track speed, current angle, previous angles, destination angle and is it stuck
       # TODO: restrict max and min angle for each joint
       
       def #{joint}(options=nil, &callback)
@@ -47,7 +48,9 @@ module Player
         angle_error = options[:angle_error] || 1
         
         unless equal_with_error? angle, current_angle, angle_error
-          add_observer(joint, :manipulator) do |prev_angle, current_angle|            
+          add_observer(joint, :manipulator) do |prev_angle, current_angle|
+            p "\#{joint} - \#{angle} - \#{current_angle}"
+            
             if equal_with_error? angle, current_angle, angle_error
               stop joint, &callback
             else
@@ -72,11 +75,12 @@ CODE
   
   def estimate_speed(angle, current_angle, max_speed)
     angle_difference  = angle - current_angle
-    radian_difference = degrees_to_radians(angle_difference) / @average_cycle_time
+    radian_difference = degrees_to_radians angle_difference
+    speed             = radian_difference / @average_cycle_time
     direction         = (radian_difference > 0) ? 1 : -1
     
-    if radian_difference.abs < max_speed
-      radian_difference
+    if speed.abs < max_speed
+      speed
     else
       max_speed * direction
     end
