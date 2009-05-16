@@ -12,10 +12,13 @@ module Client
   
   def connect
     @thread = Thread.new do
-      Client::Socket.open Server do |socket|
+      Socket.open Server do |socket|
         loop do
-          socket.puts Player.commands.shift unless Player.commands.empty?
-          Player.data = Client::Mapper.new Client::Parser.run socket.gets
+          unless Player.commands.empty?            
+            socket.puts Player.commands.join("\n")
+            Player.commands.clear
+          end
+          Player.data = Mapper.new Parser.run socket.gets
         end
       end
     end

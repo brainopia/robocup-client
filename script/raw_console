@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-# TODO: move to the vendor
+# TODO: move external dependencies like rawline to the vendor folder
 require 'rubygems'
 # TODO: print suggestion to install gem termios to make raw_console faster on *nix
 require 'rawline'
@@ -29,7 +29,8 @@ editor.bind(:ctrl_a) do
   editor.write_line "Completion info:\n #{editor.completion_proc.call(word).join ' '}"
 end
 
-editor.completion_proc = proc {|word| Player.effectors.values.select {|it| it.include? word }}
+# TODO: fix to get a list of effectors from the right place
+# editor.completion_proc = proc {|word| Player.effectors.values.select {|it| it.include? word }}
 editor.completion_append_string = ' '
 
 Client::Socket.open SERVER do |socket|

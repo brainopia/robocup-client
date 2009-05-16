@@ -1,0 +1,26 @@
+:h1:  !ruby/range -120..120
+:h2:  !ruby/range -45..45
+
+:la1: !ruby/range -120..120
+:la2: !ruby/range -1..95
+:la3: !ruby/range -120..120
+:la4: !ruby/range -90..1
+
+:ra1: !ruby/range -120..120
+:ra2: !ruby/range -95..1
+:ra3: !ruby/range -120..120
+:ra4: !ruby/range -1..90
+
+:ll1: !ruby/range -90..1
+:ll2: !ruby/range -25..45
+:ll3: !ruby/range -25..100
+:ll4: !ruby/range -130..1
+:ll5: !ruby/range -45..75
+:ll6: !ruby/range -45..25
+
+:rl1: !ruby/range -90..1
+:rl2: !ruby/range -45..25
+:rl3: !ruby/range -25..100
+:rl4: !ruby/range -130..1
+:rl5: !ruby/range -45..75
+:rl6: !ruby/range -25..45
