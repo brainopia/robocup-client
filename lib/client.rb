@@ -8,8 +8,8 @@ Thread.abort_on_exception = true
 
 module Client
   extend self
-  Server = ARGV.shift || '127.0.0.1' unless Client.const_defined? 'Server'
-  
+  Server = ARGV.first || '127.0.0.1' unless Client.const_defined? 'Server'
+
   def connect
     @thread = Thread.new do
       Socket.open Server do |socket|
