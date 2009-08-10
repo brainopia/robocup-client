@@ -1,44 +1,62 @@
+# TODO: add vision perceptors when we'll need them
 module Client
   class Mapper < Hash
-  
-    # TODO: add vision perceptors when we'll need them
-    def initialize(data)
-      super
-      self[:time] = data[:time][:now]
-      self[:game_time] = data[:GS][:t]
-      self[:game_mode] = data[:GS][:pm]
-      self[:gyroscope] = data[:GYR][:torso][:rt]
 
-      # TODO: uncomment it when we'll need force resistance
-      # self[:left_foot_force] = [data[:FRP][:lf][:c], data[:FRP][:lf][:f]]
-      # self[:right_foot_force] = [data[:FRP][:rf][:c], data[:FRP][:rf][:f]]
-    
-      self[:h1] = data[:HJ][:hj1][:ax]
-      self[:h2] = data[:HJ][:hj2][:ax]
+    map = {
+      'time'       => 'time now',
+      'game_time'  => 'GS t',
+      'game_mode'  => 'GS pm',
+      'gyroscope'  => 'GYR torse rt',
+      
+      'left_foot_force'  => 'FRP lf',
+      'right_foot_force' => 'FRP rf',
+      
+      'h1' => 'HJ hj1 ax',
+      'h2' => 'HJ hj2 ax',
+      
+      'ra1' => 'HJ raj1 ax',
+      'ra2' => 'HJ raj2 ax',
+      'ra3' => 'HJ raj3 ax',
+      'ra4' => 'HJ raj4 ax',
 
-      self[:ra1] = data[:HJ][:raj1][:ax]    
-      self[:ra2] = data[:HJ][:raj2][:ax]
-      self[:ra3] = data[:HJ][:raj3][:ax]
-      self[:ra4] = data[:HJ][:raj4][:ax]
-    
-      self[:la1] = data[:HJ][:laj1][:ax]    
-      self[:la2] = data[:HJ][:laj2][:ax]
-      self[:la3] = data[:HJ][:laj3][:ax]
-      self[:la4] = data[:HJ][:laj4][:ax]
-    
-      self[:rl1] = data[:HJ][:rlj1][:ax]    
-      self[:rl2] = data[:HJ][:rlj2][:ax]
-      self[:rl3] = data[:HJ][:rlj3][:ax]
-      self[:rl4] = data[:HJ][:rlj4][:ax]
-      self[:rl5] = data[:HJ][:rlj5][:ax]
-      self[:rl6] = data[:HJ][:rlj6][:ax]
-    
-      self[:ll1] = data[:HJ][:llj1][:ax]    
-      self[:ll2] = data[:HJ][:llj2][:ax]
-      self[:ll3] = data[:HJ][:llj3][:ax]
-      self[:ll4] = data[:HJ][:llj4][:ax]
-      self[:ll5] = data[:HJ][:llj5][:ax]
-      self[:ll6] = data[:HJ][:llj6][:ax]    
+      'la1' => 'HJ laj1 ax',
+      'la2' => 'HJ laj2 ax',
+      'la3' => 'HJ laj3 ax',
+      'la4' => 'HJ laj4 ax',
+
+      'rl1' => 'HJ rlj1 ax',
+      'rl2' => 'HJ rlj2 ax',
+      'rl3' => 'HJ rlj3 ax',
+      'rl4' => 'HJ rlj4 ax',
+      'rl5' => 'HJ rlj5 ax',
+      'rl6' => 'HJ rlj6 ax',
+      
+      'll1' => 'HJ llj1 ax',
+      'll2' => 'HJ llj2 ax',
+      'll3' => 'HJ llj3 ax',
+      'll4' => 'HJ llj4 ax',
+      'll5' => 'HJ llj5 ax',
+      'll6' => 'HJ llj6 ax'
+    }
+
+    map.each do |method_name, keys|
+      rubified_keys = keys.split.map {|it| "[:#{it}]" }.join
+
+      eval <<-CODE
+        def #{method_name}
+          @data#{rubified_keys}
+        end
+      CODE
     end
+
+    attr_reader :data
+
+    def initialize(data)
+      @data = data 
+    end
+
+    def [](key)
+      send key
+    end    
   end
 end
