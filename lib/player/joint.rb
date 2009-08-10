@@ -171,14 +171,14 @@ module Player
       joint.move :angle => angle
     end
 
-eval <<CODE      
-    def #{joint_name}(options=nil, &callback)
-      joint = @joints["#{joint_name}".to_sym]
+    eval <<-CODE      
+      def #{joint_name}(options=nil, &callback)
+        joint = @joints["#{joint_name}".to_sym]
       
-      return joint.current_angle unless options
-      joint.move options, &callback
-    end
-CODE
+        return joint.current_angle unless options
+        joint.move options, &callback
+      end
+    CODE
 
   end # @joints.each
 end # Player

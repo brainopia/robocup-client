@@ -18,7 +18,7 @@ module Client
             socket.puts Player.commands.join("\n")
             Player.commands.clear
           end
-          Player.data = Mapper.new Parser.run socket.gets
+          Player.data = Mapper.new(Parser.run socket.gets)
         end
       end
     end

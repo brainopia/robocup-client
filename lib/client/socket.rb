@@ -32,7 +32,7 @@ module Client
             socket.puts init_msg
             socket.gets
           end
-      
+
           yield socket
         end
       rescue Errno::ECONNREFUSED
