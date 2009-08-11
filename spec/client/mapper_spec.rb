@@ -3,13 +3,18 @@ require 'lib/client/mapper'
 Spec::Matchers.define :be_mapped_to do |mapped_hash|
   match do |mapper|
     mapped_hash.all? do |key, value|
-      mapper[key] == value
+      mapper[key] == value && mapper.send(key) == value
     end
   end
 end
 
 describe Client::Mapper do
-  describe 'general data' do
+  it 'should store original hash with perceptors' do
+    perceptors = {:a => 1, :b => 2}
+    Client::Mapper.new(perceptors).data.should == perceptors
+  end
+
+  describe 'general data' do    
     it do
       Client::Mapper.new(:time => { :now => 'value' }).should be_mapped_to :time => 'value'
     end
