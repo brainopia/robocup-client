@@ -1,6 +1,16 @@
 # TODO: add vision perceptors when we'll need them
 module Client
-  class Mapper < Hash
+  class Mapper
+
+    attr_reader :data
+
+    def initialize(data)
+      @data = data 
+    end
+
+    def [](key)
+      send key
+    end    
 
     map = {
       'time'       => 'time now',
@@ -48,15 +58,6 @@ module Client
         end
       CODE
     end
-
-    attr_reader :data
-
-    def initialize(data)
-      @data = data 
-    end
-
-    def [](key)
-      send key
-    end    
+    
   end
 end
