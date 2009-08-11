@@ -1,6 +1,6 @@
 # TODO: add vision perceptors when we'll need them
 module Client
-  class Mapper
+  class Mapper < BasicObject
 
     attr_reader :data
 
@@ -9,7 +9,7 @@ module Client
     end
 
     def [](key)
-      send key
+      __send__ key
     end    
 
     map = {
