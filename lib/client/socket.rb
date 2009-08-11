@@ -16,10 +16,10 @@ module Client
         puts "Simspark isn't running on #{server}"
         exit
       end
-    end        
+    end
 
     def puts(message)
-      message += "\n"      
+      message += "\n"
       prefix = pack_big_endian message.size
       super prefix + message
     end
@@ -31,7 +31,7 @@ module Client
         exit
       end
       read unpack_big_endian(prefix)
-    end    
+    end
 
     protected
 
