@@ -13,7 +13,6 @@ require 'player'
 SERVER = ARGV.first || '127.0.0.1'
 Thread.abort_on_exception = true
 detailed_flag = true
-filter_node = ''
 
 editor = RawLine::Editor.new
 
@@ -46,14 +45,12 @@ Client::Socket.open SERVER do |socket|
           exit
         when 'detailed toggle'
           detailed_flag = !detailed_flag
-        when /filter(.*)/
-          filter_node = Regexp.escape($1.lstrip)
         end
       
         socket.puts "(#{command})"        
         if detailed_flag
           result = socket.gets
-          puts filter_node.empty? ? result : Client::Parser.filter(result, filter_node)
+          puts result
         end
       end
     end  
