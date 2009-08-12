@@ -13,10 +13,10 @@ module Client
   def connect
     @thread = Thread.new do
       Socket.open Server do |socket|
+        commands = Robot.commands
         loop do
-          unless Robot.commands.empty?            
-            socket.puts Robot.commands.join("\n")
-            Robot.commands.clear
+          unless commands.empty?
+            socket.puts commands.slice!(0, commands.size).join("\n")
           end
           Robot.data = Mapper.new(Parser.run socket.gets)
         end
