@@ -28,7 +28,7 @@ module Kernel
   end
   
   def r
-    Player
+    Robot
   end  
 end
 

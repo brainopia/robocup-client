@@ -1,4 +1,4 @@
-require 'player'
+require 'robot'
 
 require 'client/socket'
 require 'client/parser'
@@ -14,11 +14,11 @@ module Client
     @thread = Thread.new do
       Socket.open Server do |socket|
         loop do
-          unless Player.commands.empty?            
-            socket.puts Player.commands.join("\n")
-            Player.commands.clear
+          unless Robot.commands.empty?            
+            socket.puts Robot.commands.join("\n")
+            Robot.commands.clear
           end
-          Player.data = Mapper.new(Parser.run socket.gets)
+          Robot.data = Mapper.new(Parser.run socket.gets)
         end
       end
     end

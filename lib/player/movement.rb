@@ -1,6 +1,6 @@
 require 'yaml'
 
-module Player
+module Robot
   
   def do
     Movement
@@ -21,10 +21,10 @@ module Player
         movements.each {|movement| make movement }
       elsif movements.is_a? Hash
         movements.each do |first_movement, next_movements|
-          Player.pose.send(first_movement) { make next_movements }
+          Robot.pose.send(first_movement) { make next_movements }
         end
       else
-        Player.pose.send movements
+        Robot.pose.send movements
       end
     end    
     

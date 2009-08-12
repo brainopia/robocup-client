@@ -1,4 +1,4 @@
-module Player
+module Robot
   # TODO: think about reimplementing
   
   def data=(new_data)

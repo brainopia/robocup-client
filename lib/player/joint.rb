@@ -4,7 +4,7 @@ require 'yaml'
 Максимальная скорость поворота – 351.5 градусов в секунду, что соответствует, примерно, 6.15 радианам в секунду
 =end
 
-module Player
+module Robot
   # TODO: take in account an inertia when calculate an anguliar speed for a joint!!!!
   class Joint
     silence_warnings do
@@ -34,7 +34,7 @@ module Player
     end
     
     def current_angle
-      Player.data[@name]
+      Robot.data[@name]
     end
     
     def destination_angle=(angle)
@@ -64,8 +64,8 @@ module Player
         stop
       else
         sync_speed
-        Player.after_every_cycle(@name) do |old_data|
-          # new_time = Player.data[:time]
+        Robot.after_every_cycle(@name) do |old_data|
+          # new_time = Robot.data[:time]
           # old_time = old_data[:time]          
           #         
           # puts "
@@ -90,7 +90,7 @@ module Player
     end
     
     def stop
-      Player.remove_observer :after_every_cycle, @name
+      Robot.remove_observer :after_every_cycle, @name
       @destination_angle = nil
       sync_speed
       @callback.call if @callback      
@@ -130,7 +130,7 @@ module Player
     
     def sync_speed
       @speed = estimate_speed
-      Player.commands << "(#{@effector} #{@speed})"
+      Robot.commands << "(#{@effector} #{@speed})"
     end
     
     def estimate_speed
@@ -181,4 +181,4 @@ module Player
     CODE
 
   end # @joints.each
-end # Player
+end # Robot

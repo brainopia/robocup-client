@@ -8,7 +8,7 @@ require 'rawline'
 $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'client/socket'
 require 'client/parser'
-require 'player'
+require 'robot'
 
 SERVER = ARGV.first || '127.0.0.1'
 Thread.abort_on_exception = true
@@ -29,7 +29,7 @@ editor.bind(:ctrl_a) do
 end
 
 # TODO: fix to get a list of effectors from the right place
-# editor.completion_proc = proc {|word| Player.effectors.values.select {|it| it.include? word }}
+# editor.completion_proc = proc {|word| Robot.effectors.values.select {|it| it.include? word }}
 editor.completion_append_string = ' '
 
 Client::Socket.open SERVER do |socket|

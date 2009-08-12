@@ -1,6 +1,6 @@
 require 'yaml'
 
-module Player
+module Robot
   
   def pose
     Pose
@@ -21,7 +21,7 @@ module Player
           joints_completed = 0
           
           pose.each do |joint, angle|
-            Player.send joint, :angle => angle do
+            Robot.send joint, :angle => angle do
               if (joints_completed += 1) == joints_size && pose_callback
                 pose_callback.call
               end

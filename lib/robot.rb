@@ -5,7 +5,7 @@ require 'player/joint'
 require 'player/pose'
 require 'player/movement'
 
-module Player
+module Robot
   extend self
   
   attr_reader :commands, :data
