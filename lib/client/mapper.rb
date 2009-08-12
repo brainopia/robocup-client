@@ -5,11 +5,14 @@ module Client
     def initialize(data)
       self[:time]       = data[:time][:now]
       self[:game_time]  = data[:GS][:t]
-      self[:game_mode]  = data[:GS][:pm]
-      self[:gyroscope]  = data[:GYR][:torse][:rt]
 
-      self[:left_foot_resistance]  = data[:FRP][:lf]
-      self[:right_foot_resistance] = data[:FRP][:rf]
+      self[:game_mode]  = data[:GS][:pm]
+      self[:gyroscope]  = data[:GYR][:torso][:rt]
+
+      if data[:FRP]
+        self[:left_foot_resistance]  = data[:FRP][:lf]
+        self[:right_foot_resistance] = data[:FRP][:rf]
+      end
 
       self[:h1] = data[:HJ][:hj1][:ax]
       self[:h2] = data[:HJ][:hj2][:ax]

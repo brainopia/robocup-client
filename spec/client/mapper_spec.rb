@@ -20,7 +20,7 @@ describe Client::Mapper do
     before(:all) do
       @mapper = mapper_for :time => { :now => :value1 },
                            :GS   => { :t => :value2, :pm => :value3 },
-                           :GYR  => { :torse => { :rt => :value4 }}
+                           :GYR  => { :torso => { :rt => :value4 }}
     end
     
     it 'should map to time data' do
