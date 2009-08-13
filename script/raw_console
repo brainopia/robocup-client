@@ -3,6 +3,7 @@
 # TODO: move external dependencies like rawline to the vendor folder
 require 'rubygems'
 # TODO: print suggestion to install gem termios to make raw_console faster on *nix
+require 'termios'
 require 'rawline'
 
 $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
@@ -12,7 +13,7 @@ require 'robot'
 
 SERVER = ARGV.first || '127.0.0.1'
 Thread.abort_on_exception = true
-detailed_flag = true
+detailed_flag = false
 
 editor = RawLine::Editor.new
 
@@ -23,14 +24,9 @@ editor.bind(:ctrl_t) do
   editor.write_line "Detailed info is #{detailed_flag}"
 end
 
-editor.bind(:ctrl_a) do
-  word = editor.line.word[:text]
-  editor.write_line "Completion info:\n #{editor.completion_proc.call(word).join ' '}"
+def wrap(command)
+  "(#{command})"
 end
-
-# TODO: fix to get a list of effectors from the right place
-# editor.completion_proc = proc {|word| Robot.effectors.values.select {|it| it.include? word }}
-editor.completion_append_string = ' '
 
 Client::Socket.open SERVER do |socket|
   Thread.new do
@@ -39,24 +35,33 @@ Client::Socket.open SERVER do |socket|
 
       unless command.include? 'info'
         editor.history.push command
-        
+
         case command
         when 'exit'
           exit
         when 'detailed toggle'
           detailed_flag = !detailed_flag
+        when 'batch'
+          commands = []
+          until (command = editor.readline '   ').empty?
+            commands << wrap(command)
+          end
+          command = commands.join("")
+        else
+          command = wrap(command)
         end
-      
-        socket.puts "(#{command})"        
+
+        p command
+        socket.puts command
         if detailed_flag
           result = socket.gets
           puts result
         end
       end
-    end  
+    end
   end
-  
+
   loop do
     socket.gets
-  end  
+  end
 end

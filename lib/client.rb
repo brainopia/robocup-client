@@ -16,7 +16,7 @@ module Client
         commands = Robot.commands
         loop do
           unless commands.empty?
-            socket.puts commands.slice!(0, commands.size).join("\n")
+            socket.puts commands.slice!(0, commands.size).join
           end
           Robot.data = Mapper.new(Parser.run socket.gets)
         end
