@@ -1,12 +1,10 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'irb'
-require 'irb/completion'
+require 'termios'
+require 'rawline'
 $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'client'
-
-ARGV.concat [ "--readline", "--prompt-mode", "simple" ]
 
 class Object
   # Метод для быстрой справки по методам текущего объекта
@@ -33,4 +31,10 @@ module Kernel
 end
 
 Client.connect
-IRB.start
+
+editor = RawLine::Editor.new
+loop do
+  cmd = editor.readline '>> '
+  editor.history.push cmd
+  p eval(cmd)
+end
