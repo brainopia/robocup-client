@@ -51,7 +51,6 @@ Client::Socket.open SERVER do |socket|
           command = wrap(command)
         end
 
-        p command
         socket.puts command
         if detailed_flag
           result = socket.gets
