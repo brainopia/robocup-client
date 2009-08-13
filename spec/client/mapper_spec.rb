@@ -4,7 +4,7 @@ describe Client::Mapper do
   alias contain include
 
   before(:all) do
-    # hack so we can test mapper with not-complete data
+    # hack so we can test mapper with non-complete data
     def nil.[](a) end
   end
 
