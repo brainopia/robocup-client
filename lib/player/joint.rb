@@ -64,33 +64,15 @@ module Robot
         stop
       else
         sync_speed
-        Robot.after_every_cycle(@name) do |old_data|
-          # new_time = Robot.data[:time]
-          # old_time = old_data[:time]          
-          #         
-          # puts "
-          # Time - #{new_time}
-          # Cycle time - #{new_time - old_time}
-          # Name - #{name}
-          # Current angle - #{current_angle}
-          # Destination angle - #{destination_angle}
-          # Angle difference - #{angle_difference}
-          # Radian difference - #{radian_difference}
-          # Speed - #{speed_to_achive_destination_angle_in_one_cycle}
-          # Reached destination - #{reached_destination?}
-          # Stuck - #{stuck?}
-          # "
+        Robot.observers[@name] = lambda do
           update_history
           (reached_destination? or stuck?) ? stop : sync_speed
-          # puts "
-          # Actual speed - #{@speed}
-          # "
         end
       end
     end
     
     def stop
-      Robot.remove_observer :after_every_cycle, @name
+      Robot.observers.delete @name
       @destination_angle = nil
       sync_speed
       @callback.call if @callback      
