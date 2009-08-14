@@ -1,11 +1,11 @@
-require 'lib/client/convertor'
+require 'lib/client/converter'
 
-describe Client::Convertor do
+describe Client::Converter do
   it 'should convert numbers to big endian format' do
-    Client::Convertor.pack(42).should == "\000\000\000*"
+    Client::Converter.pack(42).should == "\000\000\000*"
   end
   
   it 'should convert numbers from big endian format' do
-    Client::Convertor.unpack("\000\000\000*").should == 42
+    Client::Converter.unpack("\000\000\000*").should == 42
   end
 end
