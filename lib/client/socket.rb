@@ -1,15 +1,13 @@
 require 'socket'
+require 'client/big_endian_converter'
 
 module Client
   class Socket < TCPSocket
+    
     def self.open(server = '127.0.0.1', team = 'GoBrain', number = 0)
       begin
         super server, 3100 do |socket|
-          ["(scene rsg/agent/nao/nao.rsg)", "(init (unum #{number})(teamname #{team}))"].each do |init_msg|
-            socket.puts init_msg
-            socket.gets
-          end
-
+          socket.initialize_client team, number
           yield socket
         end
       rescue Errno::ECONNREFUSED
@@ -18,9 +16,16 @@ module Client
       end
     end
 
+    def initialize_client(team, number)
+      ["(scene rsg/agent/nao/nao.rsg)", "(init (unum #{number})(teamname #{team}))"].each do |message|
+        puts message
+        gets
+      end
+    end
+
     def puts(message)
       message += "\n"
-      prefix = pack_big_endian message.size
+      prefix = Convertor.pack message.size
       super prefix + message
     end
 
@@ -30,17 +35,7 @@ module Client
         Kernel.puts 'Connection to simspark is lost'
         exit
       end
-      read unpack_big_endian(prefix)
-    end
-
-    protected
-
-    def pack_big_endian(number)
-      [number].pack 'N'
-    end
-
-    def unpack_big_endian(string)
-      string.unpack('N').first
+      read Convertor.unpack(prefix)
     end
   end
 end
