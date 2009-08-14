@@ -1,5 +1,5 @@
 require 'socket'
-require 'lib/client/convertor'
+require 'lib/client/converter'
 
 module Client
   class Socket < TCPSocket
@@ -25,7 +25,7 @@ module Client
 
     def puts(message)
       message += "\n"
-      prefix = Convertor.pack message.size
+      prefix = Converter.pack message.size
       super prefix + message
     end
 
@@ -35,7 +35,7 @@ module Client
         Kernel.puts 'Connection to simspark is lost'
         exit
       end
-      read Convertor.unpack(prefix)
+      read Converter.unpack(prefix)
     end
   end
 end
