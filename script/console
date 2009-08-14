@@ -36,5 +36,9 @@ editor = RawLine::Editor.new
 loop do
   cmd = editor.readline '>> '
   editor.history.push cmd
-  p eval(cmd)
+  begin
+    p eval(cmd)
+  rescue => e
+    puts e
+  end
 end
