@@ -1,5 +1,5 @@
 require 'socket'
-require 'client/big_endian_converter'
+require 'lib/client/convertor'
 
 module Client
   class Socket < TCPSocket
