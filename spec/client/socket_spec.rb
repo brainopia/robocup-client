@@ -23,7 +23,7 @@ describe Client::Socket do
   end
 
   before(:all) do
-    @server = TCPServer.open('3100')
+    @server = TCPServer.open '3100'
     
     @message = 'test'
     @big_endian_size = Client::Converter.pack @message.size    
