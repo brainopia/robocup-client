@@ -10,7 +10,7 @@ module Robot
     silence_warnings do
       MaxSpeed          = 6.15
       DefaultError      = 1
-      DegreesInRadian   = 360 / (Math::PI * 2)
+      DegreesInRadian   = 180 / Math::PI
       AverageCycleTime  = 0.02 # TODO: make this value adjustable (very important! it can drastically change quality of movements if the cycle time will be changed)
       Angles            = YAML.load_file 'lib/player/joint/angles.yml'
       HistoryDepth      = 10
