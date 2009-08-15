@@ -3,11 +3,7 @@
 require 'rubygems'
 require 'termios'
 require 'rawline'
-
-$:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
-require 'client/socket'
-require 'client/parser'
-require 'robot'
+require 'lib/client/socket'
 
 SERVER = ARGV.first || '127.0.0.1'
 Thread.abort_on_exception = true

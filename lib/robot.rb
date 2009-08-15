@@ -1,8 +1,8 @@
-require 'extensions/kernel'
+require 'lib/extensions/kernel'
 
-require 'player/joint'
-require 'player/pose'
-require 'player/movement'
+require 'lib/player/joint'
+require 'lib/player/pose'
+require 'lib/player/movement'
 
 module Robot
   extend self

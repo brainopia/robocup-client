@@ -3,8 +3,7 @@
 require 'rubygems'
 require 'termios'
 require 'rawline'
-$:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
-require 'client'
+require 'lib/client'
 
 class Object
   # Метод для быстрой справки по методам текущего объекта

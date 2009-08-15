@@ -1,8 +1,8 @@
-require 'robot'
+require 'lib/robot'
 
-require 'client/socket'
-require 'client/parser'
-require 'client/mapper'
+require 'lib/client/socket'
+require 'lib/client/parser'
+require 'lib/client/mapper'
 
 Thread.abort_on_exception = true
 
