@@ -23,12 +23,18 @@ module Client
     connect
   end
 
-  def communicate_with(socket)
-    loop { iteraction commands }
+  def communicate_with(server)
+    loop do
+      say_to server if Robot.commands
+      listen_to server
+    end
   end
-  
-  def iteraction(commands)
-    socket.puts commands.slice!(0, commands.size).join unless commands.empty?
-    Robot.data = Mapper.new(Parser.run socket.gets)
+
+  def say_to(server)
+    server.puts Robot.commands.slice!(0, Robot.commands.size).join
+  end
+
+  def listen_to(server)
+    Robot.data = Mapper.new(Parser.run server.gets)
   end
 end
