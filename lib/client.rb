@@ -28,7 +28,7 @@ module Client
   end
   
   def iteraction_with(server)
-    say_to server if Robot.commands
+    say_to server unless Robot.commands.empty?
     listen_to server
   end
 
