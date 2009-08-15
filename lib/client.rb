@@ -12,7 +12,6 @@ module Client
 
   def connect
     @thread = Thread.new { Socket.open(Server) {|it| communicate it }}
-    sleep 0.1 # give time for a socket to be properly initialized in the second thread
   end
 
   def disconnect
