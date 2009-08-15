@@ -1,9 +1,3 @@
-Для ознакомления с управлением роботом советую использовать <em>script/console</em> – данный скрипт позволяет в интерактивном режиме обмениваться информацией с сервером робокапа.
+<em>script/console</em> is the best way to get acquainted with the project and understand how robot is controlled. It works just like irb so you can control robot in interactive manner.
 
-Робот представлен модулем +Robot+. Чтобы посмотреть доступные методы данного модуля, напишите в консоли <tt>Robot.m</tt>.
-
-Метод +m+ позволяет получить список всех методов (без учета стандартных) для любого объекта.
-
-Используя <tt>reload</tt>, можно перезагрузить код проекта в консоли (полезно после редактирования кода проекта, чтобы не перезагружать консоль).
-
-Для того, чтобы заново подсоединиться к серверу робокапа можно использовать <tt>Client.reconnect</tt> (полезно, если робот упал, чтобы быстро поднять его).
+Module +Robot+ provides a low-level interface to control robot. The rest you can found out reading code or using console. Currently i'm planning to develop kinematics for robot, so it's a long way till walking.

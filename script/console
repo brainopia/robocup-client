@@ -6,7 +6,7 @@ require 'rawline'
 require 'lib/client'
 
 class Object
-  # Метод для быстрой справки по методам текущего объекта
+  # returns all method names of current object without standard ones
   def m
     if [Module, Class].include? self.class
       public_methods - self.class.public_instance_methods
@@ -19,7 +19,7 @@ class Object
 end
 
 module Kernel
-  # Перезагружаем все файлы (чтобы не перезапускать консоль в случае редактирования кода)
+  # reloads project
   def reload
     Dir.glob('lib/**/*.rb').each {|file| load file }
   end

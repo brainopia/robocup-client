@@ -1,16 +1,16 @@
 module Client
 
 =begin
-  Данный модуль предназначен для парсинга s-expressions, получаемых от робокаповского сервера
+  This module parses s-expressions which are sent by robocup server.  
   TODO: refactoring
 =end
   module Parser
     extend self
     
 =begin
-  Метод parse получает строку вида
+  Method parse gets a string like
     '(time (now 696.94))(GS (t 0.00) (pm BeforeKickOff))(GYR (n torso) (rt -0.24 3.30 -0.06))'
-  и возвращает хеш
+  and returns hash
     {:time=>{:now=>696.94}, :GS=>{:t=>0.0, :pm=>:BeforeKickOff}, :GYR=>{:torso=>{:rt=>[-0.24, 3.3, -0.06]}}}
 =end  
 

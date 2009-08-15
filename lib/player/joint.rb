@@ -1,7 +1,7 @@
 require 'yaml'
 =begin
-Скорость задается в радианах в секунду, что соответствует 57.3 градусам в секунду.
-Максимальная скорость поворота – 351.5 градусов в секунду, что соответствует, примерно, 6.15 радианам в секунду
+Speed is set in radiands per second.
+Max speed is 6.15 radians per second.
 =end
 
 module Robot
