@@ -24,10 +24,12 @@ module Client
   end
 
   def communicate_with(server)
-    loop do
-      say_to server if Robot.commands
-      listen_to server
-    end
+    loop { iteraction_with server }
+  end
+  
+  def iteraction_with(server)
+    say_to server if Robot.commands
+    listen_to server
   end
 
   def say_to(server)
