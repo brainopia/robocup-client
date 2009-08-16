@@ -1,6 +1,6 @@
 module Client
   # convert numbers to and from big endian format
-  module Converter
+  module Prefix
     def self.pack(number)
       [number].pack 'N'
     end
