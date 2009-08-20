@@ -1,14 +1,14 @@
 require 'yaml'
 =begin
 Speed is set in radiands per second.
-Max speed is 6.15 radians per second.
+Max speed is 6.14 radians per second.
 =end
 
 module Robot
   # TODO: take in account an inertia when calculate an anguliar speed for a joint!!!!
   class Joint
     silence_warnings do
-      MaxSpeed          = 6.15
+      MaxSpeed          = 6.14
       DefaultError      = 1
       DegreesInRadian   = 180 / Math::PI
       AverageCycleTime  = 0.02 # TODO: make this value adjustable (very important! it can drastically change quality of movements if the cycle time will be changed)
