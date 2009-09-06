@@ -26,10 +26,10 @@ describe Client::Socket do
     @server = TCPServer.open '3100'
     
     @message = 'test'
-    @big_endian_size = Client::Converter.pack @message.size    
+    @big_endian_size = Client::Prefix.pack @message.size    
     
     @message_with_newline = @message + "\n"    
-    @big_endian_size_with_newline = Client::Converter.pack @message_with_newline.size
+    @big_endian_size_with_newline = Client::Prefix.pack @message_with_newline.size
   end
 
   after(:all) do
@@ -69,7 +69,7 @@ describe Client::Socket do
       open_socket
       server = @server.accept
       ["(scene rsg/agent/nao/nao.rsg)", "(init (unum 0)(teamname GoBrain))"].each do |expected|
-        init_message = Client::Converter.pack(expected.size + 1) + expected + "\n"
+        init_message = Client::Prefix.pack(expected.size + 1) + expected + "\n"
         server.gets.should == init_message
       end
     end
@@ -83,7 +83,7 @@ describe Client::Socket do
       open_socket '127.0.0.1', 'FooBarTeam'
       server = @server.accept
       ["(scene rsg/agent/nao/nao.rsg)", "(init (unum 0)(teamname FooBarTeam))"].each do |expected|
-        init_message = Client::Converter.pack(expected.size + 1) + expected + "\n"
+        init_message = Client::Prefix.pack(expected.size + 1) + expected + "\n"
         server.gets.should == init_message
       end
     end
@@ -92,7 +92,7 @@ describe Client::Socket do
       open_socket '127.0.0.1', 'FooBarTeam', 3
       server = @server.accept
       ["(scene rsg/agent/nao/nao.rsg)", "(init (unum 3)(teamname FooBarTeam))"].each do |expected|
-        init_message = Client::Converter.pack(expected.size + 1) + expected + "\n"
+        init_message = Client::Prefix.pack(expected.size + 1) + expected + "\n"
         server.gets.should == init_message
       end
     end
