@@ -1,21 +1,21 @@
 require 'yaml'
 
 module Robot
-  
+
   def do
     Movement
   end
-  
+
   module Movement
     extend self
-    
-    Dir.glob('lib/player/movement/*.yml').each do |movement_file|
+
+    Dir.glob('lib/robot/movement/*.yml').each do |movement_file|
       movements = YAML.load_file movement_file
       movement_name = File.basename movement_file, '.yml'
-      
-      define_method(movement_name) { make movements }      
+
+      define_method(movement_name) { make movements }
     end
-    
+
     def make(movements)
       if movements.is_a? Array
         movements.each {|movement| make movement }
@@ -26,7 +26,7 @@ module Robot
       else
         Robot.pose.send movements
       end
-    end    
-    
-  end  
+    end
+
+  end
 end

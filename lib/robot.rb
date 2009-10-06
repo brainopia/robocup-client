@@ -1,12 +1,12 @@
 require 'lib/extensions/kernel'
 
-require 'lib/player/joint'
-require 'lib/player/pose'
-require 'lib/player/movement'
+require 'lib/robot/joint'
+require 'lib/robot/pose'
+require 'lib/robot/movement'
 
 module Robot
   extend self
-  
+
   attr_reader :commands, :data, :observers
   @data       = {}
   @commands   = []
