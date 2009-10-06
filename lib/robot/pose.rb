@@ -13,7 +13,7 @@ module Robot
       pose = YAML.load_file pose_file
       pose_name = File.basename pose_file, '.yml'
 
-      eval <<CODE
+      eval <<-CODE
         def #{pose_name}(&pose_callback)
           pose = #{pose.inspect}
 
@@ -26,11 +26,9 @@ module Robot
                 pose_callback.call
               end
             end
-
           end
         end
-CODE
-    end
-  end
-
-end
+      CODE
+    end # Dir.glob
+  end # Pose
+end # Robot
