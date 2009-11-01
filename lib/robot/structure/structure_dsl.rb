@@ -1,25 +1,29 @@
 module Robot::Structure
   @joints, @limbs = {}, {}
 
-  private
+  class << self
+    attr_reader :joints, :limbs
 
-  def self.symmetrical_joint(name, &proc)
-    [:left, :right].each do |side|
-      joint :"#{side}_#{name}", side, &proc
+    private
+
+    def symmetrical_joint(name, &proc)
+      [:left, :right].each do |side|
+        joint :"#{side}_#{name}", side, &proc
+      end
     end
-  end
 
-  def self.joint(name, side=nil, &proc)
-    @joints[name] = JointDSL.new(side, &proc).joint
-  end
-
-  def self.symmetrical_limb(*args)
-    [:left, :right].each do |side|
-      limb *args.map {|it| :"#{side}_#{it}" }
+    def joint(name, side=nil, &proc)
+      @joints[name] = JointDSL.new(side, &proc).joint
     end
-  end
 
-  def self.limb(name, *joints)
-    @limbs[name] = Limb.new joints.map {|name| @joints[name] }
+    def symmetrical_limb(*args)
+      [:left, :right].each do |side|
+        limb *args.map {|it| :"#{side}_#{it}" }
+      end
+    end
+
+    def limb(name, *joints)
+      @limbs[name] = Limb.new joints.map {|name| @joints[name] }
+    end
   end
 end

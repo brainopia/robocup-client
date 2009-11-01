@@ -11,6 +11,7 @@ module Robot::Structure
       @translation = options[:translation] || Vector3d[0,0,0]
       @anchor      = options[:anchor]      || Vector3d[0,0,0]
       @z_axis      = options[:z_axis]      || Vector3d[0,0,1]
+      @perceptor   = options[:perceptor]
       raise 'z-axis should be set as a unit vector' unless @z_axis.unit?
     end
 
@@ -25,6 +26,23 @@ module Robot::Structure
 
     def anchor_translation
       translation + anchor - prev_joint.anchor
+    end
+
+    def current_angle
+      Robot.data[@perceptor]
+    end
+
+    def current_transformation
+      @theta.value = current_angle
+      @transformation.map {|it| it.is_a?(Symbolic::Operatable) ? it.value : it }
+    end
+
+    def current_full_transformation
+      if prev_joint
+        prev_joint.current_full_transformation * current_transformation
+      else
+        current_transformation
+      end
     end
 
     private
@@ -77,9 +95,9 @@ module Robot::Structure
         @dh_parameters[:theta] = Math.acos(x_axis.dot_product prev_joint.x_axis).radians.round_to(4)
       end
 
-      theta = var :name => "θ#{index}"
+      @theta = var :name => "θ#{index}"
       symbolic do
-        @dh_parameters[:theta] += theta
+        @dh_parameters[:theta] += @theta
       end
     end
 

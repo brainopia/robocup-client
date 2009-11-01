@@ -21,12 +21,23 @@ module Robot::Structure
       @options[:anchor] = Vector3d[x,y,z]
     end
 
+    def perceptor(value)
+      @options[:perceptor] = :"#{side_shortcut}#{value}"
+    end
+
     def right_side?
       @side == :right
     end
 
     def left_side?
       @side == :left
+    end
+
+    def side_shortcut
+      case @side
+      when :right then 'r'
+      when :left then 'l'
+      end
     end
   end
 end
