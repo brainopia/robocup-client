@@ -100,17 +100,17 @@ module Symbolic
     def *(value)
       return value if value == 0
       return self if value == 1
-      Expression.new self, variable, '*'
+      Expression.new self, value, '*'
     end
 
     def +(value)
       return self if value == 0
-      Expression.new self, variable, '+'
+      Expression.new self, value, '+'
     end
 
     def -(value)
       return self if value == 0
-      Expression.new self, variable, '-'
+      Expression.new self, value, '-'
     end
   end # Operations
 
