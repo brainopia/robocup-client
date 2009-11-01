@@ -1,4 +1,3 @@
-require 'yaml'
 =begin
 Speed is set in radiands per second.
 Max speed is 6.14 radians per second.

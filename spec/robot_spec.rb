@@ -1,4 +1,4 @@
-require 'lib/robot'
+require 'spec/spec_helper'
 
 describe Robot do
   it 'should notify observers when there is new data' do

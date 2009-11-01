@@ -1,4 +1,4 @@
-require 'lib/client/parser'
+require 'spec/spec_helper'
 
 describe Client::Parser do
   it 'should parse sexps with integer' do
@@ -12,11 +12,11 @@ describe Client::Parser do
   it 'should parse sexps with text' do
     Client::Parser.run('(c text)').should == { :c => :text }
   end
-  
+
   it 'should parse sexps with multiple items' do
     Client::Parser.run('(b 1 2)').should == { :b => [1, 2] }
   end
-  
+
   it 'should parse sexps in list' do
     Client::Parser.run('(d 1) (e 2)').should == { :d => 1, :e => 2 }
   end
@@ -32,7 +32,7 @@ describe Client::Parser do
   it 'should parse multiple nested sexps' do
     Client::Parser.run('(a (b 1) (c 2))').should == { :a => { :b => 1, :c => 2 }}
   end
-  
+
   it 'should parse multiple nested sexps without paying attention to whitespace between' do
     Client::Parser.run('(a (b 1)(c 2))').should == { :a => { :b => 1, :c => 2 }}
   end

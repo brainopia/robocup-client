@@ -1,4 +1,4 @@
-require 'lib/client/mapper'
+require 'spec/spec_helper'
 
 describe Client::Mapper do
   alias contain include
@@ -22,7 +22,7 @@ describe Client::Mapper do
                            :GS   => { :t => :value2, :pm => :value3 },
                            :GYR  => { :torso => { :rt => :value4 }}
     end
-    
+
     it 'should map to time data' do
       @mapper.should contain :time => :value1
     end
@@ -143,7 +143,7 @@ describe Client::Mapper do
     it 'should map to rl4 data' do
       @mapper.should contain :rl4 => :value4
     end
-    
+
     it 'should map to rl5 data' do
       @mapper.should contain :rl5 => :value5
     end
@@ -178,7 +178,7 @@ describe Client::Mapper do
     it 'should map to ll4 data' do
       @mapper.should contain :ll4 => :value4
     end
-    
+
     it 'should map to ll5 data' do
       @mapper.should contain :ll5 => :value5
     end

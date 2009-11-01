@@ -3,7 +3,7 @@
 require 'rubygems'
 require 'termios'
 require 'rawline'
-require 'lib/client'
+require 'robocup'
 
 class Object
   # returns all method names of current object without standard ones
@@ -15,7 +15,7 @@ class Object
         self.public_instance_methods false
       end
     end
-  end  
+  end
 end
 
 module Kernel
@@ -23,10 +23,10 @@ module Kernel
   def reload
     Dir.glob('lib/**/*.rb').each {|file| load file }
   end
-  
+
   def r
     Robot
-  end  
+  end
 end
 
 Client.connect

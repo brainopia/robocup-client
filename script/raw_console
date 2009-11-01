@@ -3,7 +3,7 @@
 require 'rubygems'
 require 'termios'
 require 'rawline'
-require 'lib/client/socket'
+require 'robocup'
 
 SERVER = ARGV.first || '127.0.0.1'
 Thread.abort_on_exception = true

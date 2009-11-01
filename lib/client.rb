@@ -1,11 +1,3 @@
-require 'lib/robot'
-
-require 'lib/client/socket'
-require 'lib/client/parser'
-require 'lib/client/mapper'
-
-Thread.abort_on_exception = true
-
 module Client
   extend self
   Server = ARGV.first || '127.0.0.1' unless Client.const_defined? 'Server'
@@ -26,7 +18,7 @@ module Client
   def communicate_with(server)
     loop { interact_with server }
   end
-  
+
   def interact_with(server)
     say_to server unless Robot.commands.empty?
     listen_to server

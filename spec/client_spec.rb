@@ -1,4 +1,4 @@
-require 'lib/client'
+require 'spec/spec_helper'
 
 describe Client do
   def reload_with_first_argv(value)

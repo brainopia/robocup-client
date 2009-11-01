@@ -1,9 +1,3 @@
-require 'lib/extensions/kernel'
-
-require 'lib/robot/joint'
-require 'lib/robot/pose'
-require 'lib/robot/movement'
-
 module Robot
   extend self
 

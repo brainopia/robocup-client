@@ -1,5 +1,3 @@
-require 'yaml'
-
 module Robot
 
   def pose

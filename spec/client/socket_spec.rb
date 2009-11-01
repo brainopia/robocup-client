@@ -1,6 +1,4 @@
-require 'lib/client/socket'
-
-Thread.abort_on_exception = true
+require 'spec/spec_helper'
 
 describe Client::Socket do
   def disable_socket_method(name)
@@ -24,11 +22,11 @@ describe Client::Socket do
 
   before(:all) do
     @server = TCPServer.open '3100'
-    
+
     @message = 'test'
-    @big_endian_size = Client::Prefix.pack @message.size    
-    
-    @message_with_newline = @message + "\n"    
+    @big_endian_size = Client::Prefix.pack @message.size
+
+    @message_with_newline = @message + "\n"
     @big_endian_size_with_newline = Client::Prefix.pack @message_with_newline.size
   end
 
@@ -40,16 +38,16 @@ describe Client::Socket do
     before(:all) do
       disable_socket_method :initialize_client
     end
-  
+
     after(:all) do
       enable_socket_method :initialize_client
     end
-  
+
     it 'should put robocup messages' do
       open_socket {|it| it.puts @message }
       @server.accept.gets.should == @big_endian_size_with_newline + @message_with_newline
     end
-  
+
     it 'should get robocup messages' do
       Thread.new { @server.accept.write @big_endian_size + @message }
       open_socket {|it| it.gets.should == @message }
@@ -65,7 +63,7 @@ describe Client::Socket do
       enable_socket_method :gets
     end
 
-    it 'should put initialization messages' do      
+    it 'should put initialization messages' do
       open_socket
       server = @server.accept
       ["(scene rsg/agent/nao/nao.rsg)", "(init (unum 0)(teamname GoBrain))"].each do |expected|
@@ -73,7 +71,7 @@ describe Client::Socket do
         server.gets.should == init_message
       end
     end
-    
+
     it 'should set server value' do
       Thread.new { @server.accept }
       open_socket('localhost') {|it| it.peeraddr[3] == 'localhost' }
