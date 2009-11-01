@@ -35,17 +35,23 @@ module Symbolic
       numerical_context do
         Symbolic.aliases.each do |standard_operation, non_symbolic_operation|
           alias_method non_symbolic_operation, standard_operation
-
-          class_eval <<-CODE
-            def #{standard_operation}(value)
-              if value.is_a? Operatable
-                Expression.new self, value, '#{standard_operation}'
-              else
-                #{Symbolic.aliases[standard_operation]} value
-              end
-            end
-          CODE
         end # aliases.each
+
+        def *(value)
+          if value.is_a?(Operatable)
+            return self if self == 0
+            return value if self == 1
+            Expression.new self, value, '*'
+          else
+            non_symbolic_multiplication(value)
+          end
+        end
+
+        def +(value)
+          return non_symbolic_addition(value) unless value.is_a? Operatable
+          return value if self == 0
+          Expression.new self, value, '+'
+        end
       end # numerical_context
 
       math_operations.each do |operation|
@@ -91,12 +97,20 @@ module Symbolic
       UnaryMinus.new self
     end
 
-    [:*, :+, :-].each do |operation|
-      module_eval <<-CODE
-        def #{operation}(variable)
-          Expression.new self, variable, '#{operation}'
-        end
-      CODE
+    def *(value)
+      return value if value == 0
+      return self if value == 1
+      Expression.new self, variable, '*'
+    end
+
+    def +(value)
+      return self if value == 0
+      Expression.new self, variable, '+'
+    end
+
+    def -(value)
+      return self if value == 0
+      Expression.new self, variable, '-'
     end
   end # Operations
 
@@ -167,7 +181,6 @@ module Symbolic
       @variable.undefined_variables
     end
   end
-
 
   class UnaryMinus < Operatable
     def initialize(variable)
