@@ -119,9 +119,12 @@ module Symbolic
 
     @@index = 0
 
-    def initialize(value)
-      @@index += 1
-      @name = "var#{@@index}"
+    def initialize(value=nil, name=nil)
+      unless @name = name
+        @@index += 1
+        @name = "var#{@@index}"
+      end
+
       @value = value
     end
 
@@ -202,8 +205,8 @@ module Symbolic
 end
 
 module Kernel
-  def var(value=nil)
-    Symbolic::Variable.new value
+  def var(value=nil, name=nil)
+    Symbolic::Variable.new value, name
   end
 
   def symbolic
