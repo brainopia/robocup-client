@@ -35,7 +35,7 @@ module Symbolic
       numerical_context do
         Symbolic.aliases.each do |standard_operation, non_symbolic_operation|
           alias_method non_symbolic_operation, standard_operation
-        end # aliases.each
+        end
 
         def *(value)
           if value.is_a?(Operatable)
@@ -119,13 +119,13 @@ module Symbolic
 
     @@index = 0
 
-    def initialize(value=nil, name=nil)
-      unless @name = name
+    def initialize(options)
+      unless @name = options[:name]
         @@index += 1
         @name = "var#{@@index}"
       end
 
-      @value = value
+      @value = options[:value]
     end
 
     def to_s
@@ -205,8 +205,8 @@ module Symbolic
 end
 
 module Kernel
-  def var(value=nil, name=nil)
-    Symbolic::Variable.new value, name
+  def var(options)
+    Symbolic::Variable.new options
   end
 
   def symbolic

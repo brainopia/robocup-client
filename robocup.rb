@@ -3,6 +3,7 @@ require 'yaml'
 require 'matrix'
 
 require 'lib/extensions/kernel'
+require 'lib/extensions/numeric'
 require 'lib/extensions/vector3d'
 require 'lib/extensions/symbolic'
 
