@@ -1,3 +1,4 @@
+# coding: utf-8
 # TODO: refactor
 module Robot::Structure
   class Joint
