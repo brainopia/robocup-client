@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'termios'
-require 'rawline'
 require 'robocup'
 
 class Object
@@ -29,15 +27,12 @@ module Kernel
   end
 end
 
-Client.connect
+$:.unshift 'vendor/drbirb/lib'
 
-editor = RawLine::Editor.new
-loop do
-  cmd = editor.readline '>> '
-  editor.history.push cmd
-  begin
-    p eval(cmd)
-  rescue => e
-    puts e
-  end
+fork do
+  require 'drbirb/loader'
+  Client.connect
+  Drbirb.server.thread.join
 end
+sleep 10
+require 'drbirbc'
