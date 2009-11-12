@@ -1,0 +1,160 @@
+#!/usr/bin/env ruby
+require 'robocup'
+
+module Viewer
+  # extend Gl,Glu,Glut
+
+  def self.show
+    require 'rubygems'
+    require 'opengl'
+
+    glutInit
+    glutInitDisplayMode GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_ALPHA
+    glutInitWindowPosition 100, 100
+    glutInitWindowSize 500, 500
+    glutCreateWindow 'Robot joints'
+
+    glClearColor 0, 0, 0, 0
+    glShadeModel GL_SMOOTH
+
+    glEnable    GL_BLEND
+    glBlendFunc GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA
+
+    glutDisplayFunc display
+    # glutReshapeFunc reshape
+    glutKeyboardFunc keyboard
+    glutMainLoop
+  end
+
+  def self.point(*position)
+    glBegin GL_POINTS
+      glVertex *position
+    glEnd
+  end
+
+  def self.display
+    lambda do
+      glClear GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT
+      glOrtho -30, 30, -40, 5, -30, 30
+
+      glLineWidth 1
+      glScale 100, 100, 100
+      # Rotate to align with picture
+      glRotate -90, 1, 0, 0
+      glRotate 180, 0, 0, 1
+
+      # Center of body
+      glColor 1, 1, 1
+      point 0, 0, 0
+
+      # Limbs
+      Robot::Structure.limbs.each do |name, limb|
+        limb.joints.inject(Vector3d[0,0,0]) do |translation, joint|
+          translation += joint.anchor_translation
+          point translation.to_a
+          translation
+        end
+      end
+
+      # glColor 1, 0, 0, 0.66
+      # glBegin GL_LINES
+      #   glVertex 0, 0, 0
+      #   glVertex 100, 0, 0
+      # glEnd
+      # glPushMatrix
+      # glTranslate 100, 0 ,0
+      # glRotate 90, 0, 1, 0
+      # glutSolidCone 20, 30, 20, 1
+      # glPopMatrix
+      #
+      # glColor(0,1,0,0.66)
+      # glBegin(GL_LINES)
+      #   glVertex(0,0,0)
+      #   glVertex(0,100,0)
+      # glEnd()
+      # glPushMatrix()
+      # glTranslate(0,100,0)
+      # glRotate(-90,1,0,0)
+      # glutSolidCone(20, 30, 20, 1)
+      # glPopMatrix()
+      #
+      # glColor(0,0,1,0.66)
+      # glBegin(GL_LINES)
+      #   glVertex(0,0,0)
+      #   glVertex(0,0,100)
+      # glEnd()
+      # glPushMatrix()
+      # glTranslate(0,0,100)
+      # glRotate(0,0,1,0)
+      # glutSolidCone(20, 30, 20, 1)
+      # glPopMatrix()
+
+      # glLineWidth 1
+      # glColor 1, 1, 1
+      # glBegin GL_POINTS
+      #   glVertex 0, 0, 0
+      # glEnd
+      # glPushMatrix()
+      # glTranslate(-1.0, 0.0, 0.0)
+      # glRotate(@shoulder, 0.0, 0.0, 1.0)
+      # glTranslate(1.0, 0.0, 0.0)
+      # glPushMatrix()
+      # glScale(2.0, 0.4, 1.0)
+      # glutWireCube(1.0)
+      # glPopMatrix()
+      #
+      # glTranslate(1.0, 0.0, 0.0)
+      # glRotate(@elbow, 0.0, 0.0, 1.0)
+      # glTranslate(1.0, 0.0, 0.0)
+      # glPushMatrix()
+      # glScale(2.0, 0.4, 1.0)
+      # glutWireCube(1.0)
+      # glPopMatrix()
+      #
+      # glPopMatrix()
+      glFlush
+      glutSwapBuffers
+  	end
+  end
+
+  # def self.reshape
+  #   lambda do |w, h|
+  #     glViewport(0, 0,  w,  h)
+  #     glMatrixMode(GL_PROJECTION)
+  #     glLoadIdentity()
+  #     gluPerspective(65.0,  w/ h, 1.0, 20.0)
+  #     glMatrixMode(GL_MODELVIEW)
+  #     glLoadIdentity()
+  #     glTranslate(0.0, 0.0, -5.0)
+  #   end
+  # end
+
+  def self.keyboard
+    lambda do |key, x, y|
+      case key
+      # when ?s
+      #   @shoulder = (@shoulder + 5) % 360
+      #   glutPostRedisplay()
+      # when ?S
+      #   @shoulder = (@shoulder - 5) % 360
+      #   glutPostRedisplay()
+      # when ?e
+      #   @elbow = (@elbow + 5) % 360
+      #   glutPostRedisplay()
+      # when ?E
+      #   @elbow = (@elbow - 5) % 360
+      #   glutPostRedisplay()
+      when ?\e
+        exit(0)
+      end
+    end
+  end
+end
+
+Robot::Structure.limbs.each do |name, limb|
+  puts "Limb: #{name}\n\n"
+  limb.joints.each do |joint|
+    joint.debug ARGV.first
+  end
+end
+Viewer.show if ARGV.include? 'opengl'
