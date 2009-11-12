@@ -39,4 +39,35 @@ module Robot::Structure
   end
 
   symmetrical_limb :leg, :hip1, :hip2, :thigh, :shank, :ankle, :foot
+
+  symmetrical_joint :shoulder do
+    sign = right_side? ? 1 : -1
+    perceptor :a1
+    translation sign*0.098, 0, 0.075
+    axis 1, 0, 0
+  end
+
+  symmetrical_joint :upperarm do
+    sign = right_side? ? 1 : -1
+    perceptor :a2
+    translation sign*0.01, 0.02, 0
+    anchor -sign*0.01, -0.02, 0
+    axis 0, 0, 1
+  end
+
+  symmetrical_joint :elbow do
+    sign = right_side? ? 1 : -1
+    perceptor :a3
+    translation -sign*0.01, 0.07, 0.009
+    axis 0, 1, 0
+  end
+
+  symmetrical_joint :lowerarm do
+    perceptor :a4
+    translation 0, 0.05, 0
+    anchor 0, -0.05, 0
+    axis 0, 0, 1
+  end
+
+  symmetrical_limb :arm, :shoulder, :upperarm, :elbow, :lowerarm
 end

@@ -41,6 +41,8 @@ module Symbolic
           if value.is_a?(Operatable)
             return self if self == 0
             return value if self == 1
+            return UnaryMinus.create(value) if self == -1
+            return UnaryMinus.create((-self)*value) if self < 0
             Expression.new self, value, '*'
           else
             non_symbolic_multiplication(value)
@@ -94,12 +96,14 @@ module Symbolic
 
   class Operatable
     def -@
-      UnaryMinus.new self
+      UnaryMinus.create self
     end
 
     def *(value)
       return value if value == 0
       return self if value == 1
+      return UnaryMinus.create(self) if value == -1
+      return UnaryMinus.create(self * value.variable) if value.is_a? UnaryMinus
       Expression.new self, value, '*'
     end
 
@@ -186,12 +190,22 @@ module Symbolic
   end
 
   class UnaryMinus < Operatable
+    attr_reader :variable
+
+    def self.create(expression)
+      if expression.is_a? UnaryMinus
+        expression.variable
+      else
+        new expression
+      end
+    end
+
     def initialize(variable)
       @variable = variable
     end
 
     def to_s
-      "(-#{@variable})"
+      "(-(#{@variable}))"
     end
 
     def value
@@ -205,7 +219,7 @@ module Symbolic
 end
 
 module Kernel
-  def var(options)
+  def var(options={})
     Symbolic::Variable.new options
   end
 

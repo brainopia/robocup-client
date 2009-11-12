@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
-
-require 'rubygems'
 require 'robocup'
+
+# TODO: clean up this file
 
 class Object
   # returns all method names of current object without standard ones
@@ -27,12 +27,14 @@ module Kernel
   end
 end
 
+# TODO: remove this horrible hack
 $:.unshift 'vendor/drbirb/lib'
 
-fork do
+pid = fork do
   require 'drbirb/loader'
   Client.connect
   Drbirb.server.thread.join
 end
-sleep 10
+sleep 1
 require 'drbirbc'
+Process.kill "HUP", pid
