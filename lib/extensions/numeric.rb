@@ -1,10 +1,12 @@
 class Numeric
+  DEGREES_IN_RADIANS = 180 / Math::PI
+
   def degrees
-    self * (Math::PI / 180)
+    self / DEGREES_IN_RADIANS
   end
 
   def radians
-    self * (180 / Math::PI)
+    self * DEGREES_IN_RADIANS
   end
 
   def round_to(degree)
