@@ -6,8 +6,4 @@ module Kernel
   ensure
     $VERBOSE = old_verbose
   end
-
-  def var
-    SymbolicVariable.new
-  end
 end
